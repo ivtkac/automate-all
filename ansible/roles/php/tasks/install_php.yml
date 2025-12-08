@@ -1,0 +1,18 @@
+---
+- name: Add PHP repository
+  ansible.builtin.apt_repository:
+    repo: ppa:ondrej/php
+    state: present
+    update_cache: yes
+
+- name: Install PHP {{ php_version }} packages
+  ansible.builtin.apt:
+    name:
+      - php{{ php_version }}
+      - php{{ php_version }}-common
+      - php{{ php_version }}-cli
+      - php{{ php_version }}-fpm
+      - php{{ php_version }}-curl
+      - php{{ php_version }}-bz2
+      - php{{ php_version }}-mbstring
+      - php{{ php_version }}-intl
