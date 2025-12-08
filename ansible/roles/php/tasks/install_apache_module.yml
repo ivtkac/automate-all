@@ -4,18 +4,18 @@
 
 - name: Enable PHP configure in Apache
   command: a2enconf php{{ php_version }}-fpm
-  when: apache_present is defined and apache_present
+  when: apache_is_installed is defined and apache_is_installed
   notify: restart apache2
 
 - name: Install Apache PHP module
   ansible.builtin.apt:
     name: libapache2-mod-php{{ php_version }}
     state: present
-  when: apache_present is defined and apache_present
+  when: apache_is_installed is defined and apache_is_installed
 
 - name: Enable PHP module in Apache
   community.general.apache2_module:
     state: present
     name: php{{ php_version }}
-  when: apache_present is defined and apache_present
+  when: apache_is_installed is defined and apache_is_installed
   notify: restart apache
