@@ -1,0 +1,38 @@
+---
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Upgrade all packages to latest
+  ansible.builtin.apt:
+    upgrade: dist
+    autoremove: yes
+    autoclean: yes
+  when: os_upgrade_to_lts | default(true)
+
+- name: Install essential packages
+  ansible.builtin.apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
+      - software-properties-common
+      - wget
+      - git
+      - unzip
+      - vim
+      - net-tools
+      - iptables
+      - iptables-persistent
+    state: present
+
+- name: Install web server
+  ansible.builtin.apt:
+    name:
+      - nginx
+      - apache2
+    state: present
+
