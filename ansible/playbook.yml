@@ -1,0 +1,8 @@
+---
+- hosts: servers
+  become: true
+  roles:
+    - role: php
+      php_version: "8.3"
+      install_apache_mod: true
+      install_ioncube: true
