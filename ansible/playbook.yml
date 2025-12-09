@@ -2,9 +2,5 @@
 - hosts: servers
   become: true
   roles:
-    - role: common
-    - role: webserver
-      vars:
-        install_apache: true
-        install_nginx: true
-        nginx_proxy_apache: true
+    - role: databases
+      install_mariadb: true

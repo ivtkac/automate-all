@@ -1,0 +1,52 @@
+---
+- name: Install MariaDB packages
+  ansible.builtin.package:
+    name:
+      - mariadb-server
+      - mariadb-client
+      - python3-pymysql
+    state: present
+
+- name: Start and enable MariaDB service
+  ansible.builtin.service:
+    name: mariadb
+    state: started
+    enabled: true
+
+- name: Generate random root password
+  ansible.builtin.set_fact:
+    mariadb_root_password: "{{ lookup('ansible.builtin.password', '/dev/null chars=ascii_letters,digits,punctuation length=32') }}"
+  when: mariadb_root_password is not defined
+
+- name: Set MariaDB root password
+  community.mysql.mysql_user:
+    name: root
+    password: "{{ mariadb_root_password }}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    state: present
+
+- name: Removes all anonymous user accounts
+  community.mysql.mysql_user:
+    name: ''
+    host_all: true
+    state: absent
+    login_user: root
+    login_password: "{{ mariadb_root_password }}"
+
+- name: Remove test database
+  community.mysql.mysql_user:
+    name: test
+    state: absent
+    login_user: root
+    login_password: "{{ mariadb_root_password }}"
+
+- name: Save MariaDB credentials to vault file
+  ansible.builtin.copy:
+    content: |
+      ---
+      mariadb_root_password: "{{ mariadb_root_password }}"
+    dest: "{{ playbook_dir }}/credentials/mariadb_credentials.yml"
+    mode: '0600'
+  delegate_to: localhost
+  become: false
+  run_once: true
