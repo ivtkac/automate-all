@@ -3,5 +3,7 @@
   become: true
   roles:
     - role: cms
-      php_version: 8.3
+      php_version: "8.3"
+      cms_extensions: true
       wordpress: true
+      joomla: true

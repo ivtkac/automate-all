@@ -5,7 +5,6 @@
       - php{{ php_version }}-imagick
       - php{{ php_version }}-mysql
       - php{{ php_version }}-pgsql
-      - php{{ php_version }}-json
       - php{{ php_version }}-xml
       - php{{ php_version }}-zip
       - php{{ php_version }}-gd

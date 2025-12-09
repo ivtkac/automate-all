@@ -2,5 +2,9 @@
 - name: Install Wordpress
   ansible.builtin.include_tasks: wordpress.yml
   when: wordpress | default(false)
-  tags:
-    - wordpress
+  tags: wordpress
+
+- name: Install Joomla
+  ansible.builtin.include_tasks: joomla.yml
+  when: joomla | default(false)
+  tags: joomla

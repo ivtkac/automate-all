@@ -1,7 +1,7 @@
 ---
 - name: Create WordPress installation directory
   ansible.builtin.file:
-    path: /var/www/
+    path: /var/www/wordpress
     state: directory
     owner: www-data
     group: www-data

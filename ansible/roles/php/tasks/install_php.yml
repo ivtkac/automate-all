@@ -16,3 +16,7 @@
       - php{{ php_version }}-bz2
       - php{{ php_version }}-mbstring
       - php{{ php_version }}-intl
+
+- name: Set a fact php version
+  ansible.builtin.set_fact:
+    php_version: "{{ php_version }}"
