@@ -1,7 +1,9 @@
 - name: Install MariaDB
   ansible.builtin.include_tasks: mariadb.yml
-  when: install_mariadb
+  when: install_mariadb | default(false)
+  tags: mariadb
 
 - name: Install PostgreSQL
   ansible.builtin.include_tasks: postgresql.yml
-  when: install_postgres
+  when: install_postgres | default(false)
+  tags: postgres

@@ -1,0 +1,14 @@
+---
+- name: Install PostgreSQL packages
+  ansible.builtin.package:
+    name:
+      - postgresql
+      - postgresql-contrib
+      - python3-psycopg2
+    state: present
+
+- name: Start and enable PostgreSQL service
+  ansible.builtin.service:
+    name: postgresql
+    state: started
+    enabled: true

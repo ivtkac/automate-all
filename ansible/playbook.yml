@@ -4,3 +4,4 @@
   roles:
     - role: databases
       install_mariadb: true
+      install_postgres: true
