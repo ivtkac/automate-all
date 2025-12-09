@@ -1,6 +1,0 @@
----
-install_apache: true
-install_nginx: true
-nginx_proxy_apache: true
-apache_port: 8080
-domains: "example.com www.example.com"

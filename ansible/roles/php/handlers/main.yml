@@ -3,6 +3,7 @@
   ansible.builtin.service:
     name: apache2
     state: restarted
+  when: apache_installed is defined and apache_installed.stat.exists
 
 - name: restart php-fpm
   ansible.builtin.service:

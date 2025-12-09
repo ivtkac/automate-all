@@ -1,10 +1,25 @@
 ---
+- name: Check prerequisites for WordPress
+  ansible.builtin.assert:
+    - php_version is defined
+  fail_msg: "PHP must be installed before installing WordPress. Include the php role first."
+  quiet: true
+  when: install_wordpress | default(false)
+
+- name: Check prerequisites for Joomla
+  ansible.builtin.assert:
+    that:
+      - php_version is defined
+    fail_msg: "PHP must be installed before installing Joomla. Include the php role first."
+    quiet: true
+  when: install_joomla | default(false)
+
 - name: Install Wordpress
   ansible.builtin.include_tasks: wordpress.yml
-  when: wordpress | default(false)
+  when: install_wordpress
   tags: wordpress
 
 - name: Install Joomla
   ansible.builtin.include_tasks: joomla.yml
-  when: joomla | default(false)
+  when: install_joomla
   tags: joomla

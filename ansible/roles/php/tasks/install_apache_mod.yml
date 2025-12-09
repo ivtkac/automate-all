@@ -1,21 +1,30 @@
 ---
-- name: Chekc Apache installation
-  include_tasks: ../../webserver/tasks/check_apache.yml
-
-- name: Enable PHP configure in Apache
-  command: a2enconf php{{ php_version }}-fpm
-  when: apache_is_installed is defined and apache_is_installed
-  notify: restart apache
+- name: Chekc if Apache is installed
+  ansible.builtin.stat:
+    path: /usr/sbin/apache2
+  register: apache_installed
 
 - name: Install Apache PHP module
   ansible.builtin.apt:
     name: libapache2-mod-php{{ php_version }}
     state: present
-  when: apache_is_installed is defined and apache_is_installed
+  when: apache_installed.stat.exists
+
+- name: Enable PHP configure in Apache
+  command: a2enconf php{{ php_version }}-fpm
+  when: apache_installed.stat.exists
+  notify: restart apache
+  changed_when: false
+  failed_when: false
 
 - name: Enable PHP module in Apache
   community.general.apache2_module:
     state: present
     name: php{{ php_version }}
-  when: apache_is_installed is defined and apache_is_installed
+  when: apache_installed.stat.exists
   notify: restart apache
+
+- name: Warn if Apache not installed
+  ansible.builtin.debug:
+    msg: "Apache is not installed. Skipping Apache PHP module configuration."
+  when: not apache_installed.stat.exists

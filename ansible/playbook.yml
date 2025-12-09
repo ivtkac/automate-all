@@ -2,8 +2,9 @@
 - hosts: servers
   become: true
   roles:
-    - role: cms
-      php_version: "8.3"
-      cms_extensions: true
-      wordpress: true
-      joomla: true
+    - role: common
+    - role: webserver
+      vars:
+        install_apache: true
+        install_nginx: true
+        nginx_proxy_apache: true

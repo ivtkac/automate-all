@@ -1,22 +1,20 @@
 ---
 - name: Install PHP
   include_tasks: install_php.yml
-  when: install_php | default(true)
+  when: php_version is defined
   tags: php
 
 - name: Install Apache PHP module
   include_tasks: install_apache_mod.yml
-  when: install_apache_mod | default(false)
-  tags: apache
+  when: install_apache_mod
+  tags: [apache, php]
 
 - name: Install IonCube extension
   include_tasks: install_ioncube.yml
-  when: install_ioncube | default(false)
-  tags: php
+  when: install_ioncube
+  tags: [ioncube, php]
 
 - name: Install PHP modules for CMS
   include_tasks: install_cms_mods.yml
-  when: cms_extensions | default(false)
-  tags:
-    - wordpress
-    - joomla
+  when: cms_extensions
+  tags: [wordpress, joomla, cms, php]

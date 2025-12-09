@@ -8,6 +8,13 @@
     mode: "0644"
   notify: restart apache
 
+- name: Configure default Apache VirtualHost for custom port
+  ansible.builtin.lineinfile:
+    path: /etc/apache2/sites-available/000-default.conf
+    regexp: '^<VirtualHost \*:'
+    line: '<VirtualHost *:{{ apache_port }}>'
+  notify: restart apache
+
 - name: Make nginx reverse proxy for Apache
   ansible.builtin.template:
     src: nginx/default.j2

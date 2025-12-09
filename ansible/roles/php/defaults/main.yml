@@ -1,0 +1,4 @@
+php_version: "8.3"
+install_ioncube: false
+install_apache_mod: false
+cms_extensions: false

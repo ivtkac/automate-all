@@ -4,7 +4,8 @@
     name: apache2
     state: present
   when: install_apache | default(false)
-  tags: [apache]
+  tags:
+    - apache
 
 - name: Install nginx
   ansible.builtin.apt:

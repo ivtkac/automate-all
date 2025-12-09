@@ -1,7 +1,7 @@
 ---
 - name: restart apache
   ansible.builtin.service:
-    name: apache
+    name: apache2
     state: restarted
 
 - name: restart nginx
