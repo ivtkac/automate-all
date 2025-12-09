@@ -1,0 +1,6 @@
+---
+- name: Install Wordpress
+  ansible.builtin.include_tasks: wordpress.yml
+  when: wordpress | default(false)
+  tags:
+    - wordpress

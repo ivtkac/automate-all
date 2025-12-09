@@ -6,11 +6,17 @@
 - name: Install Apache PHP module
   include_tasks: install_apache_mod.yml
   when: install_apache_mod | default(false)
+  tags:
+    - apache
 
 - name: Install IonCube extension
   include_tasks: install_ioncube.yml
   when: install_ioncube | default(false)
+  tags:
+    - php
 
 - name: Install PHP modules for CMS
   include_tasks: install_cms_mods.yml
   when: cms_extensions | default(false)
+  tags:
+    - wordpress
