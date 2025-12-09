@@ -1,0 +1,25 @@
+---
+- name: Configure Apache port
+  ansible.builtin.template:
+    src: apache/ports.conf.j2
+    dest: /etc/apache2/ports.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: restart apache
+
+- name: Make nginx reverse proxy for Apache
+  ansible.builtin.template:
+    src: nginx/default.j2
+    dest: /etc/nginx/sites-available/default
+    owner: root
+    group: root
+    mode: "0644"
+  notify: restart nginx
+
+- name: Enable nginx site
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/default
+    dest: /etc/nginx/sites-enabled/default
+    state: link
+  notify: restart nginx

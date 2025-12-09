@@ -1,0 +1,22 @@
+---
+- name: Create WordPress installation directory
+  ansible.builtin.file:
+    path: /var/www/
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: '0755'
+
+- name: Check if WordPress is already downloaded
+  ansible.builtin.stat:
+    path: /var/www/wordpress/wp-config-sample.php
+  register: wordpress_downloaded
+
+- name: Download and extract WordPress
+  ansible.builtin.unarchive:
+    src: https://wordpress.org/latest.tar.gz
+    dest: /var/www
+    remote_src: yes
+    owner: www-data
+    group: www-data
+  when: not wordpress_downloaded.stat.exists

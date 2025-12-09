@@ -5,7 +5,7 @@
 - name: Enable PHP configure in Apache
   command: a2enconf php{{ php_version }}-fpm
   when: apache_is_installed is defined and apache_is_installed
-  notify: restart apache2
+  notify: restart apache
 
 - name: Install Apache PHP module
   ansible.builtin.apt:
