@@ -28,11 +28,3 @@
       - iptables
       - iptables-persistent
     state: present
-
-- name: Install web server
-  ansible.builtin.apt:
-    name:
-      - nginx
-      - apache2
-    state: present
-

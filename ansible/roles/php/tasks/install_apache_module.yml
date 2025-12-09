@@ -1,6 +1,6 @@
 ---
 - name: Chekc Apache installation
-  include_tasks: ../../common/tasks/check_apache.yml
+  include_tasks: ../../webserver/tasks/check_apache.yml
 
 - name: Enable PHP configure in Apache
   command: a2enconf php{{ php_version }}-fpm
