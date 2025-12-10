@@ -1,0 +1,19 @@
+---
+# Web Servers
+apache: true
+nginx: true
+nginx_proxy_apache: true
+apache_port: 8080
+domains: "example.com"
+
+# PHP
+php_version: "8.3"
+ioncube: true
+
+# Databases
+mariadb: false
+postgresql: false
+
+# CMS
+wordpress: false
+joomla: false

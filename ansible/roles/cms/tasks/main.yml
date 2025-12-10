@@ -1,25 +1,25 @@
 ---
 - name: Check prerequisites for WordPress
-  ansible.builtin.assert:
-    - php_version is defined
+  ansible.builtin.stat:
+    path: /usr/bin/php
   fail_msg: "PHP must be installed before installing WordPress. Include the php role first."
   quiet: true
-  when: install_wordpress | default(false)
+  when: wordpress or joomla
 
-- name: Check prerequisites for Joomla
-  ansible.builtin.assert:
-    that:
-      - php_version is defined
-    fail_msg: "PHP must be installed before installing Joomla. Include the php role first."
-    quiet: true
-  when: install_joomla | default(false)
-
-- name: Install Wordpress
-  ansible.builtin.include_tasks: wordpress.yml
-  when: install_wordpress
-  tags: wordpress
+- name: Install WordPress
+  ansible.builtin.include_role: webapp
+  vars:
+    app_name: "WordPress"
+    app_install_dir: "/var/www/wordpress"
+    app_download_url: "https://wordpress.org/latest.tar.gz"
+    app_check_file: "wp-config-sample.php"
+  when: wordpress
 
 - name: Install Joomla
-  ansible.builtin.include_tasks: joomla.yml
-  when: install_joomla
-  tags: joomla
+  ansible.builtin.include_role: webapp
+  vars:
+    app_name: "Joomla"
+    app_install_dir: "/var/www/joomla"
+    app_download_url: "https://downloads.joomla.org/cms/joomla6/6-0-1/Joomla_6-0-1-Stable-Full_Package.zip"
+    app_check_file: "installation/index.php"
+  when: joomla

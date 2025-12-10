@@ -1,6 +1,6 @@
 ---
-install_apache: false
-install_nginx: false
+apache: false
+nginx: false
 nginx_proxy_apache: false
 apache_port: 8080
 domains: "example.com"

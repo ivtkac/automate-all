@@ -1,2 +1,3 @@
-install_wordpress: false
-install_joomla: false
+---
+wordpress: false
+joomla: false

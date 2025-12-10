@@ -1,45 +1,25 @@
 ---
 - name: Download IonCube Loader
-  ansible.builtin.get_url:
-    url: "https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz"
-    dest: /tmp/ioncube_loaders.tar.gz
-    mode: "0644"
-    timeout: 30
-
-- name: Extract IonCube Loader
   ansible.builtin.unarchive:
-    src: /tmp/ioncube_loaders.tar.gz
-    dest: /tmp/
-    remote_src: yes
+    src: "https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz"
+    dest: /tmp/ioncube
+    mode: "0644"
+    remote_src: true
 
 - name: Get PHP extension directory
-  ansible.builtin.shell: php -i | grep "^extension_dir" | awk '{print $3}'
-  register: php_ext_dir
+  ansible.builtin.shell: php -i | grep "^extension_dir" | awk '{ print $3 }'
+  register: php_extenstion_dir
   changed_when: false
-
-- name: Print PHP extension dir
-  ansible.builtin.debug:
-    msg: |
-      PHP version: {{ php_version }}
-      Extension dir: {{ php_ext_dir.stdout }}
-
 
 - name: Copy IonCube Loader to PHP extension directory
   ansible.builtin.copy:
     src: "/tmp/ioncube/ioncube_loader_lin_{{ php_version }}.so"
-    dest: "{{ php_ext_dir.stdout }}/ioncube_loader_lin_{{ php_version }}.so"
-    remote_src: yes
+    dest: "{{ php_extenstion_dir.stdout }}/ioncube_loader_lin_{{ php_version }}.so"
 
 - name: Prepend IonCube Loader as the first zend_extension
   ansible.builtin.lineinfile:
     path: "/etc/php/{{ php_version }}/{{ item }}/php.ini"
-    line: "zend_extension = {{ php_ext_dir.stdout}}/ioncube_loader_lin_{{ php_version }}.so"
+    line: "zend_extension = {{ php_extenstion_dir.stdout }}/ioncube_loader_lin_{{ php_version }}.so"
     insertbefore: "^\\;zend_extension"
-    create: yes
-  loop:
-    - cli
-    - fpm
-    - apache2
-
-- name: Enable IonCube module
-  ansible.builtin.command: phpenmod -v {{ php_version }} 00-ioncube
+  loop: [cli, fpm, apache2]
+  notify: restart php-fpm

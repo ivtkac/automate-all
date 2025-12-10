@@ -1,30 +1,15 @@
 ---
-- name: Chekc if Apache is installed
-  ansible.builtin.stat:
-    path: /usr/sbin/apache2
-  register: apache_installed
-
 - name: Install Apache PHP module
   ansible.builtin.apt:
     name: libapache2-mod-php{{ php_version }}
     state: present
-  when: apache_installed.stat.exists
 
 - name: Enable PHP configure in Apache
-  command: a2enconf php{{ php_version }}-fpm
-  when: apache_installed.stat.exists
-  notify: restart apache
-  changed_when: false
-  failed_when: false
+  ansible.builtin.command: a2enconf php{{ php_version }}-fpm
+  notify: restart apache2
 
 - name: Enable PHP module in Apache
   community.general.apache2_module:
-    state: present
     name: php{{ php_version }}
-  when: apache_installed.stat.exists
-  notify: restart apache
-
-- name: Warn if Apache not installed
-  ansible.builtin.debug:
-    msg: "Apache is not installed. Skipping Apache PHP module configuration."
-  when: not apache_installed.stat.exists
+    state: present
+  notify: restart apache2

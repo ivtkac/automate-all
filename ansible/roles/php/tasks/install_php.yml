@@ -17,6 +17,13 @@
       - php{{ php_version }}-mbstring
       - php{{ php_version }}-intl
 
-- name: Set a fact php version
-  ansible.builtin.set_fact:
-    php_version: "{{ php_version }}"
+- name: Install PHP extensions
+  ansible.builtin.apt:
+    name:
+      - php{{ php_version }}-imagick
+      - php{{ php_version }}-mysql
+      - php{{ php_version }}-pgsql
+      - php{{ php_version }}-xml
+      - php{{ php_version }}-zip
+      - php{{ php_version }}-gd
+    state: present

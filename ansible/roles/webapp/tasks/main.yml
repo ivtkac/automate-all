@@ -1,0 +1,22 @@
+---
+- name: Create {{ app_name }} installation dir
+  ansible.builtin.file:
+    path: "{{ app_install_dir }}"
+    state: directory
+    owner: "www-data"
+    group: "www-data"
+    mode: "0755"
+
+- name: Check if {{ app_name }} is already downloaded
+  ansible.builtin.file:
+    path: "{{ app_install_dir }}/{{ app_check_file }}"
+  register: app_downloaded
+
+- name: "Download and extract {{ app_name }}"
+  ansible.builtin.unarchive:
+    src: "{{ app_download_url }}"
+    dest: "{{ app_install_dir }}"
+    remote_src: true
+    owner: "www-data"
+    group: "www-data"
+  when: not app_downloaded.stat.exists

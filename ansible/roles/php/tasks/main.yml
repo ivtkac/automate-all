@@ -1,20 +1,22 @@
 ---
 - name: Install PHP
-  include_tasks: install_php.yml
+  ansible.builtin.include_tasks: install_php.yml
   when: php_version is defined
-  tags: php
+  tags: [php]
+
+- name: Check if Apache is installed
+  ansible.builtin.stat:
+    path: /usr/sbin/apache2
+  register: apache_installed
+  changed_when: false
+  failed_when: false
 
 - name: Install Apache PHP module
-  include_tasks: install_apache_mod.yml
-  when: install_apache_mod
+  ansible.builtin.include_tasks: install_apache_mod.yml
+  when: apache_installed.stat.exists
   tags: [apache, php]
 
 - name: Install IonCube extension
-  include_tasks: install_ioncube.yml
-  when: install_ioncube
+  ansible.builtin.include_tasks: install_ioncube.yml
+  when: ioncube | default(false)
   tags: [ioncube, php]
-
-- name: Install PHP modules for CMS
-  include_tasks: install_cms_mods.yml
-  when: cms_extensions
-  tags: [wordpress, joomla, cms, php]
