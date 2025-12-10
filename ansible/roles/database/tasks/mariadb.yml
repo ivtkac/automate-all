@@ -1,9 +1,11 @@
 ---
 - name: Install MariaDB packages
   ansible.builtin.package:
-    - mariadb-server
-    - mariadb-client
-    - python3-pymysql
+    name:
+      - mariadb-server
+      - mariadb-client
+      - python3-pymysql
+    state: present
 
 - name: Start and enable MariaDB service
   ansible.builtin.service:

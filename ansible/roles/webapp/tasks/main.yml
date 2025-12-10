@@ -8,7 +8,7 @@
     mode: "0755"
 
 - name: Check if {{ app_name }} is already downloaded
-  ansible.builtin.file:
+  ansible.builtin.stat:
     path: "{{ app_install_dir }}/{{ app_check_file }}"
   register: app_downloaded
 
@@ -20,3 +20,4 @@
     owner: "www-data"
     group: "www-data"
   when: not app_downloaded.stat.exists
+

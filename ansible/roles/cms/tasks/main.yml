@@ -1,13 +1,7 @@
 ---
-- name: Check prerequisites for WordPress
-  ansible.builtin.stat:
-    path: /usr/bin/php
-  fail_msg: "PHP must be installed before installing WordPress. Include the php role first."
-  quiet: true
-  when: wordpress or joomla
-
 - name: Install WordPress
-  ansible.builtin.include_role: webapp
+  ansible.builtin.include_role:
+    name: webapp
   vars:
     app_name: "WordPress"
     app_install_dir: "/var/www/wordpress"
@@ -16,7 +10,8 @@
   when: wordpress
 
 - name: Install Joomla
-  ansible.builtin.include_role: webapp
+  ansible.builtin.include_role:
+    name: webapp
   vars:
     app_name: "Joomla"
     app_install_dir: "/var/www/joomla"
