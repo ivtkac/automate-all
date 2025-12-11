@@ -1,4 +1,17 @@
 ---
+- name: Install PHP extensions
+  ansible.builtin.apt:
+    name:
+      - php{{ php_version }}-imagick
+      - php{{ php_version }}-mysql
+      - php{{ php_version }}-pgsql
+      - php{{ php_version }}-xml
+      - php{{ php_version }}-zip
+      - php{{ php_version }}-gd
+    state: present
+  tags: [php]
+  when: php_version is defined
+
 - name: Install WordPress
   ansible.builtin.include_role:
     name: webapp
