@@ -1,9 +1,5 @@
 ---
 - hosts: servers
   become: true
-  vars:
-    php_version: "8.3"
   roles:
-    - role: cms
-      wordpress: true
-      joomla: true
+    - docker
