@@ -12,7 +12,7 @@ roles:
 ```
 
 2. Install php versioning and apache mod
-```
+```yml
 ---
 hosts: servers
 become: true
@@ -26,7 +26,7 @@ roles:
 ```
 
 3. Install webservers and make nginx proxy for apache
-```
+```yml
 ---
 hosts: servers
 become: true
