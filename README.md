@@ -33,6 +33,7 @@ become: true
 vars:
   nginx: true
   apache: true
+  apache_port: 8080 # default is also 8080, but we explicit here for example
   nginx_proxy_apache: true
 roles:
   - webserver
