@@ -9,6 +9,7 @@ This project is a modular Ansible automation framework designed for rapid deploy
 - No need to edit tasks; configure your entire server via group_vars/vars.yml or in your playbook.
 - Includes a `common` role for baseline server hardening and updates.
 - Easy to add new roles for different CMS or database types.
+- Automate configure wordpress.
 
 ## Examples
 
