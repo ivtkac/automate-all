@@ -1,0 +1,16 @@
+- name: Create virtual host configuration
+  ansible.builtin.template:
+    src: vhost.conf.j2
+    dest: "{{ apache2_sites_available }}/{{ item.name }}.conf"
+    owner: root
+    group: root
+    mode: '0644'
+  loop: "{{ vhosts }}"
+
+- name: Enable virtual hosts
+  ansible.builtin.command: a2ensite {{ item.name }}
+  args:
+    creates: "{{ apache2_sites_enabled }}/{{ item.name }}.conf"
+  loop: "{{ vhosts }}"
+  when: item.enabled | default(true)
+  notify: reload apache2

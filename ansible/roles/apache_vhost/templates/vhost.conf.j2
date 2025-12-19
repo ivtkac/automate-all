@@ -1,0 +1,11 @@
+<VirtualHost *:{{ item.port | default(80) }}>
+    ServerName {{ item.server_name }}
+    DocumentRoot {{ item.document_root }}
+
+    <Directory {{ item.document_root }}>
+        AllowOverride All
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/{{ item.server_name }}-error.log
+    CustomLog ${APACHE_LOG_DIR}/{{ item.server_name }}-access.log combined
+</VirtualHost>
