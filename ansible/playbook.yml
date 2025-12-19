@@ -2,4 +2,5 @@
 - hosts: servers
   become: true
   roles:
-    - docker
+    - name: cms
+      wordpress: true

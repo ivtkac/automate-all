@@ -13,21 +13,9 @@
   when: php_version is defined
 
 - name: Install WordPress
-  ansible.builtin.include_role:
-    name: webapp
-  vars:
-    app_name: "WordPress"
-    app_install_dir: "/var/www/wordpress"
-    app_download_url: "https://wordpress.org/latest.tar.gz"
-    app_check_file: "wp-config-sample.php"
-  when: wordpress
+  ansible.builtin.include_tasks: wordpress.yml
+  when: wordpress | default(false)
 
 - name: Install Joomla
-  ansible.builtin.include_role:
-    name: webapp
-  vars:
-    app_name: "Joomla"
-    app_install_dir: "/var/www/joomla"
-    app_download_url: "https://downloads.joomla.org/cms/joomla6/6-0-1/Joomla_6-0-1-Stable-Full_Package.zip"
-    app_check_file: "installation/index.php"
-  when: joomla
+  ansible.builtin.include_tasks: joomla.yml
+  when: joomla | default(false)

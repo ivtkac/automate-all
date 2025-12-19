@@ -1,0 +1,64 @@
+---
+- name: Get wordpress files
+  ansible.builtin.include_role:
+    name: webapp
+  vars:
+    app_name: "WordPress"
+    app_install_dir: "/var/www/wordpress"
+    app_download_url: "https://wordpress.org/latest.tar.gz"
+    app_check_file: "wp-config-sample.php"
+  when: wordpress
+
+- name: Create new database
+  community.mysql.mysql_db:
+    name: wordpress_db
+    state: present
+    login_user: root
+    login_password: "{{ login_password }}"
+
+- name: Create database user
+  community.mysql.mysql_user:
+    name: wordpress_user
+    password: "{{ wordpress_db_password }}"
+    host: localhost
+    priv: "wordpress_db.*:ALL,GRANT"
+    state: present
+    login_user: root
+    login_password: "{{ login_password }}"
+
+- name: Copy wp-config-sample.php to wp-config.php
+  ansible.builtin.copy:
+    src: /var/www/wordpress/wp-config-sample.php
+    dest: /var/www/wordpress/wp-config.php
+    remote_src: yes
+    force: no
+
+- name: Configure database name in wp-config.php
+  ansible.builtin.replace:
+    path: /var/www/wordpress/wp-config.php
+    regexp: "define\\( 'DB_NAME', '.*' \\);"
+    replace: "define( 'DB_NAME', 'wordpress_db' );"
+
+- name: Configure database user in wp-config.php
+  ansible.builtin.replace:
+    path: /var/www/wordpress/wp-config.php
+    regexp: "define\\( 'DB_USER', '.*' \\);"
+    replace: "define( 'DB_USER', 'wordpress_user' );"
+
+- name: Configure database password in wp-config.php
+  ansible.builtin.replace:
+    path: /var/www/wordpress/wp-config.php
+    regexp: "define\\( 'DB_PASSWORD', '.*' \\);"
+    replace: "define( 'DB_PASSWORD', '{{ wordpress_db_password }}' );"
+
+
+- name: Create virtual host in Apache
+  ansible.builtin.include_role:
+    name: apache_vhost
+  vars:
+    vhosts:
+    - name: wordpress
+      port: 8080
+      document_root: /var/www/wordpress
+      server_name: wordpress.example.com
+      enabled: yes
