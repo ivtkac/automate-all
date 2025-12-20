@@ -4,6 +4,7 @@
 
     <Directory {{ item.document_root }}>
         AllowOverride All
+        Require all granted
     </Directory>
 
     ErrorLog ${APACHE_LOG_DIR}/{{ item.server_name }}-error.log

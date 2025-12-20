@@ -2,5 +2,6 @@
 - hosts: servers
   become: true
   roles:
-    - name: cms
+    - role: cms
       wordpress: true
+      domain: wordpress.example.com
