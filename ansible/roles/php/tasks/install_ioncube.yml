@@ -2,7 +2,7 @@
 - name: Download IonCube Loader
   ansible.builtin.unarchive:
     src: "https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz"
-    dest: /tmp/ioncube
+    dest: /tmp/
     mode: "0644"
     remote_src: true
 
@@ -15,6 +15,7 @@
   ansible.builtin.copy:
     src: "/tmp/ioncube/ioncube_loader_lin_{{ php_version }}.so"
     dest: "{{ php_extenstion_dir.stdout }}/ioncube_loader_lin_{{ php_version }}.so"
+    remote_src: true
 
 - name: Prepend IonCube Loader as the first zend_extension
   ansible.builtin.lineinfile:

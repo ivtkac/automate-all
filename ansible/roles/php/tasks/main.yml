@@ -13,7 +13,7 @@
 
 - name: Install Apache PHP module
   ansible.builtin.include_tasks: install_apache_mod.yml
-  when: apache_installed.stat.exists
+  when: apache_enable_mod | default(false) and apache_installed.stat.exists
   tags: [apache, php]
 
 - name: Install IonCube extension
